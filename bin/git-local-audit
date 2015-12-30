@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+if [ "$(git rev-parse --abbrev-ref HEAD)" != "master" ]
+then
+        echo aborting: not currently on master
+        exit -1
+fi
+
+git_rev="git rev-parse"
+
+echo "### checking unmerged local branches..."
+for branch in $(git --no-pager branch --no-merged)
+do
+        # Ensure we're looking at an actual branch.
+        git show-ref -q --heads "${branch}" || continue
+
+        remote=$(git config --local branch.${branch}.remote)
+
+        if [ -z "${remote}" ]
+        then
+                echo $branch is unmerged and has no remote configured
+        elif [ $(git branch --list -r ${remote}/${branch} | wc -l) -eq 0 ]
+        then
+                echo $branch is unmerged and its remote does not exist
+        elif [ "$($git_rev ${branch})" != "$($git_rev ${remote}/${branch})" ]
+        then
+                echo $branch is unmerged and not synced to its remote
+        fi
+done
+
+echo ""
+echo "### checking merged local branches..."
+for branch in $(git --no-pager branch --merged)
+do
+        # Ensure we're looking at an actual branch.
+        git show-ref -q --heads "${branch}" || continue
+
+        remote=$(git config --local branch.${branch}.remote)
+
+        if [ -z "${remote}" ]
+        then
+                echo $branch is merged and has no remote configured
+        elif [ $(git branch --list -r ${remote}/${branch} | wc -l) -eq 0 ]
+        then
+                echo $branch is merged and its remote does not exist
+        elif [ "$($git_rev ${branch})" != "$($git_rev ${remote}/${branch})" ]
+        then
+                echo $branch is merged but not synced to its remote
+        else
+                echo $branch is merged and synced
+        fi
+done
+
+echo ""
+echo "### checking stash..."
+git --no-pager stash list
+
+echo ""
+echo "### listing untracked and ignored files..."
+git --no-pager status --short --ignored
