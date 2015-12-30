@@ -13,6 +13,28 @@ conditions:
 * Stash entries
 * Untracked files, including those matched by .gitignore
 
+## Installation
+
+Manually copy the `git-local-audit` script to a location in your `$PATH`.
+
+## Usage
+
+    $ git local-audit
+    ### checking unmerged local branches...
+    bug_2918_experimental is unmerged and not synced to its remote
+
+    ### checking merged local branches...
+    bug_2817_fix_typo is merged and its remote does not exist
+    master is merged and synced
+
+    ### checking stash...
+    stash@{0}: WIP on bug_2918_experimental: 04888b0 Fix hyperdrive
+
+    ### listing untracked and ignored files...
+     M README
+    ?? test.sh
+    !! .swp
+
 ## Known issues
 
 * Expects `master` to be the branch into which feature branches are merged
