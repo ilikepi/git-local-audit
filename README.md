@@ -41,3 +41,8 @@ Manually copy the `git-local-audit` script to a location in your `$PATH`.
 * Output is quite rough
 * Code is quite rough
 * Documentation is quite rough
+
+## Copyright
+
+This software is copyright 2015-2016 James Blanding and is made available
+under the GNU GPL version 2.  See LICENSE.txt for details.
