@@ -45,5 +45,5 @@ Manually copy the `git-local-audit` script to a location in your `$PATH`.
 
 ## Copyright
 
-This software is copyright 2015-2016 James Blanding and is made available
+This software is copyright 2015-2023 James Blanding and is made available
 under the GNU GPL version 2.  See LICENSE.txt for details.
